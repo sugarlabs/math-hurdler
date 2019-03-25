@@ -1,6 +1,8 @@
 from gettext import gettext as _
 
 import sys
+from gi import require_version as require
+require('Gtk','3.0')
 from gi.repository import Gtk
 import pygame
 
@@ -13,7 +15,7 @@ from sugar3.activity.widgets import StopButton
 
 import sugargame.canvas
 
-import math-hurdler
+import math_hurdler
 
 
 class MathHurdlerActivity(sugar3.activity.activity.Activity):
@@ -23,7 +25,7 @@ class MathHurdlerActivity(sugar3.activity.activity.Activity):
         self.paused = False
 
         # Create the game instance.
-        self.game = math-hurdler.MathHurdler()
+        self.game = math_hurdler.MathHurdler()
 
         # Build the activity toolbar.
         self.build_toolbar()
