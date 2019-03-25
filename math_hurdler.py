@@ -35,6 +35,7 @@ class MathHurdler:
         self.horse_change_semaphore = 3
         self.horse_change = 0
 
+        pygame.font.init()
         self.font = pygame.font.SysFont('monospace', 36)
         self.lg_font = pygame.font.SysFont('monospace', 60)
         self.xlg_font = pygame.font.SysFont('monospace', 90)
@@ -70,6 +71,7 @@ class MathHurdler:
             self.get_sound_path('william_tell_overture_race.wav')
         ]
 
+        pygame.mixer.init()
         self.death_sfx = pygame.mixer.Sound(self.get_sound_path('sad_trombone.wav'))
         self.jump_sfx = pygame.mixer.Sound(self.get_sound_path('success.wav'))
 
