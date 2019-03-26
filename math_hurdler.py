@@ -121,19 +121,19 @@ class MathHurdler:
         screen = pygame.display.get_surface()
         screen_size = screen.get_size()
 
-        ground = pygame.Surface((screen_size[0], screen_size[1] / 3))
+        ground = pygame.Surface((screen_size[0], screen_size[1] // 3))
         ground = ground.convert()
         ground.fill(Color.BROWN)
 
-        button_panel = pygame.Surface((screen_size[0]/3, screen_size[1] / 7))
+        button_panel = pygame.Surface((screen_size[0] // 3, screen_size[1] // 7))
 
         self.buttons = [
             Button(
                 str(self.question.choices[i]),
                 self.lg_font,
                 Color.BLACK,
-                button_panel.get_width() / 2,
-                button_panel.get_height() / 2,
+                button_panel.get_width() // 2,
+                button_panel.get_height() // 2,
                 Color.WHITE,
                 Color.BLACK,
                 -2
@@ -145,7 +145,7 @@ class MathHurdler:
             Color.GREEN,
             (0, 0),
             (ground.get_width(), 0),
-            ground.get_height() / 2
+            ground.get_height() // 2
         )
 
         points_label = self.lg_font.render('POINTS', 1, Color.BLACK)
@@ -154,15 +154,15 @@ class MathHurdler:
         sun.rect.topleft = (screen_size[0]- sun.image.get_width(),0)
 
         horse = Horse()
-        horse.rect.x = display_info.current_h/3
+        horse.rect.x = display_info.current_h // 3
         horse.rect.y = display_info.current_h - horse.image.get_height() - ground.get_height()
 
         hurdle = pygame.image.load('./assets/images/hurdle.png')
-        hurdle = pygame.transform.scale(hurdle,(hurdle.get_height()/3,hurdle.get_width()/3))
+        hurdle = pygame.transform.scale(hurdle,(hurdle.get_height() // 3,hurdle.get_width() // 3))
 
-        hurdle_y = display_info.current_h - hurdle.get_height() - (2*ground.get_height()/3)
+        hurdle_y = display_info.current_h - hurdle.get_height() - (2*ground.get_height() // 3)
 
-        question_board = pygame.Surface((screen_size[0]/3, screen_size[1] / 5))
+        question_board = pygame.Surface((screen_size[0] // 3, screen_size[1] // 5))
         question_board = question_board.convert()
         question_board.fill(Color.WHITE)
 
