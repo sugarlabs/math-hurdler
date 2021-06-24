@@ -2,8 +2,8 @@ import os, sys
 import pygame
 from pygame.locals import *
 
-if not pygame.font: print "Warining: Fonts Disabled!"
-if not pygame.mixer: print "Warning: Sound Disabled!"
+if not pygame.font: print("Warining: Fonts Disabled!")
+if not pygame.mixer: print("Warning: Sound Disabled!")
 
 class BezierHelper():
 
@@ -74,9 +74,9 @@ class BezierHelper():
 
 if __name__ == "__main__":
     move = BezierHelper()
-    print "Bezier2(0,10,.5): "
-    print move.Bezier2(0, 10, .5)
-    print "Bezier3(0,10,0,.8): "
-    print move.Bezier3(0, 10, 0, 0)
+    print("Bezier2(0,10,.5): ")
+    print(move.Bezier2(0, 10, .5))
+    print("Bezier3(0,10,0,.8): ")
+    print(move.Bezier3(0, 10, 0, 0))
     for i in range(0,15):
-        print move.NextBezier3(.1)
+        print(move.NextBezier3(.1))

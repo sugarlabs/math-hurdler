@@ -6,10 +6,10 @@ class Question:
         self.left_side = 0
         self.right_side = 0
         self.answer = 0
-        self.next()
+        next(self)
         
 
-    def next(self):
+    def __next__(self):
         self.populate_multiple_choice()
 
     def populate_multiple_choice(self):
@@ -22,7 +22,7 @@ class Question:
                 self.right_side = self.get_fraction()
                 self.answer = self.left_side + self.right_side
                 while (
-                    any(map(lambda x: x == self.answer, self.choices)) 
+                    any([x == self.answer for x in self.choices]) 
                 ):
                     self.left_side = self.get_fraction()
                     self.right_side = self.get_fraction()
@@ -35,7 +35,7 @@ class Question:
             else:
                 choice = self.create_choice()
                 while (
-                    any(map(lambda x: x == choice, self.choices)) 
+                    any([x == choice for x in self.choices]) 
                 ):
                     choice = self.create_choice()
                     

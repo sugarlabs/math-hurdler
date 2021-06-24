@@ -4,6 +4,7 @@ import pygame
 import random
 import os
 import math
+import gi
 gi.require_version('Gtk','3.0')
 from gi.repository import Gtk
 
@@ -148,7 +149,7 @@ class MathHurdler:
             Color.GREEN,
             (0, 0),
             (ground.get_width(), 0),
-            ground.get_height() / 2
+            int(ground.get_height() / 2)
         )
 
         points_label = self.lg_font.render('POINTS', 1, Color.BLACK)
@@ -161,7 +162,7 @@ class MathHurdler:
         horse.rect.y = display_info.current_h - horse.image.get_height() - ground.get_height()
 
         hurdle = pygame.image.load('./assets/images/hurdle.png')
-        hurdle = pygame.transform.scale(hurdle,(hurdle.get_height()/3,hurdle.get_width()/3))
+        hurdle = pygame.transform.scale(hurdle,(int(hurdle.get_height()/3),int(hurdle.get_width()/3)))
 
         hurdle_y = display_info.current_h - hurdle.get_height() - (2*ground.get_height()/3)
 
@@ -202,7 +203,7 @@ class MathHurdler:
             set_answer(-1)
 
         def generate_question():
-            self.question.next()
+            next(self.question)
 
             self.buttons[0].set_text(str(self.question.choices[0]))
             self.buttons[1].set_text(str(self.question.choices[1]))
