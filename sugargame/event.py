@@ -28,8 +28,8 @@ class Translator(object):
         'KP_Down': pygame.K_KP2,
         'KP_Left': pygame.K_KP4,
         'KP_Right': pygame.K_KP6,
-        'KP_Next' : pygame.K_KP3,
-        'KP_Begin' : pygame.K_KP5,
+        'KP_Next': pygame.K_KP3,
+        'KP_Begin': pygame.K_KP5,
 
     }
 
@@ -68,12 +68,12 @@ class Translator(object):
 
         # Callback functions to link the event systems
         self._activity.connect('unrealize', self._quit_cb)
-        self._activity.connect('visibility_notify_event', self._visibility_cb)
+        self._activity.connect('visibility-notify-event', self._visibility_cb)
         self._activity.connect('configure-event', self._resize_cb)
-        self._inner_evb.connect('key_press_event', self._keydown_cb)
-        self._inner_evb.connect('key_release_event', self._keyup_cb)
-        self._inner_evb.connect('button_press_event', self._mousedown_cb)
-        self._inner_evb.connect('button_release_event', self._mouseup_cb)
+        self._inner_evb.connect('key-press-event', self._keydown_cb)
+        self._inner_evb.connect('key-release-event', self._keyup_cb)
+        self._inner_evb.connect('button-press-event', self._mousedown_cb)
+        self._inner_evb.connect('button-release-event', self._mouseup_cb)
         self._inner_evb.connect('motion-notify-event', self._mousemove_cb)
         self._inner_evb.connect('screen-changed', self._screen_changed_cb)
 
@@ -100,7 +100,7 @@ class Translator(object):
     def _resize_cb(self, widget, event):
         if pygame.display.get_init():
             evt = pygame.event.Event(pygame.VIDEORESIZE,
-                                     size=(event.width,event.height),
+                                     size=(event.width, event.height),
                                      width=event.width, height=event.height)
             pygame.event.post(evt)
         return False  # continue processing
