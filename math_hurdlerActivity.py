@@ -1,21 +1,17 @@
+import math_hurdler
+import sugargame.canvas
+from sugar3.activity.widgets import StopButton
+from sugar3.graphics.toolbutton import ToolButton
+from sugar3.activity.widgets import ActivityToolbarButton
+from sugar3.graphics.toolbarbox import ToolbarBox
+import sugar3.activity.activity
+import pygame
+from gi.repository import Gtk
 from gettext import gettext as _
 
 import sys
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
-import pygame
-
-import sugar3.activity.activity
-from sugar3.graphics.toolbarbox import ToolbarBox
-from sugar3.activity.widgets import ActivityToolbarButton
-from sugar3.graphics.toolbutton import ToolButton
-from sugar3.activity.widgets import StopButton
-
-
-import sugargame.canvas
-
-import math_hurdler
 
 
 class MathHurdlerActivity(sugar3.activity.activity.Activity):
@@ -31,7 +27,8 @@ class MathHurdlerActivity(sugar3.activity.activity.Activity):
         self.build_toolbar()
 
         # Build the Pygame canvas.
-        self._pygamecanvas = sugargame.canvas.PygameCanvas(self,main = self.game.run)
+        self._pygamecanvas = sugargame.canvas.PygameCanvas(
+            self, main=self.game.run)
 
         # Note that set_canvas implicitly calls read_file when
         # resuming from the Journal.
@@ -39,8 +36,8 @@ class MathHurdlerActivity(sugar3.activity.activity.Activity):
 
         # Start the game running (self.game.run is called when the
         # activity constructor returns).
-        #Deprecated:Not required in sugargame v0.12
-        #self._pygamecanvas.run_pygame(self.game.run)
+        # Deprecated:Not required in sugargame v0.12
+        # self._pygamecanvas.run_pygame(self.game.run)
 
     def build_toolbar(self):
         toolbar_box = ToolbarBox()
