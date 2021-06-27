@@ -162,7 +162,9 @@ class MathHurdler:
         horse.rect.y = display_info.current_h - horse.image.get_height() - ground.get_height()
 
         hurdle = pygame.image.load('./assets/images/hurdle.png')
-        hurdle = pygame.transform.scale(hurdle,(int(hurdle.get_height()/3),int(hurdle.get_width()/3)))
+        hurdle = pygame.transform.scale(
+            hurdle,
+            (int(hurdle.get_height() / 3), int(hurdle.get_width() / 3)))
 
         hurdle_y = display_info.current_h - hurdle.get_height() - (2*ground.get_height()/3)
 

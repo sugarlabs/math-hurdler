@@ -10,7 +10,8 @@ class Horse(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         horse = pygame.image.load('./assets/images/color_unicorn.png').convert_alpha()
-        self.horse_base = pygame.transform.scale(horse,(int(horse.get_width() / 3), int(horse.get_height() / 3)))
+        self.horse_base = pygame.transform.scale(
+            horse, (int(horse.get_width() / 3), int(horse.get_height() / 3)))
         self.horse_jump = pygame.transform.rotate(self.horse_base,45)
         self.horse_gallop = pygame.transform.rotate(self.horse_base, -15)
         self.horse_dead = pygame.transform.rotate(self.horse_base,-150)
