@@ -1,5 +1,5 @@
-
 import pygame
+
 
 class Sun(pygame.sprite.Sprite):
     def __init__(self):

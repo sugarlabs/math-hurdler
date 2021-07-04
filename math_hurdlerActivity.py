@@ -1,21 +1,17 @@
+import math_hurdler
+import sugargame.canvas
+from sugar3.activity.widgets import StopButton
+from sugar3.graphics.toolbutton import ToolButton
+from sugar3.activity.widgets import ActivityToolbarButton
+from sugar3.graphics.toolbarbox import ToolbarBox
+import sugar3.activity.activity
+import pygame
+from gi.repository import Gtk
 from gettext import gettext as _
 
 import sys
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
-import pygame
-
-import sugar3.activity.activity
-from sugar3.graphics.toolbarbox import ToolbarBox
-from sugar3.activity.widgets import ActivityToolbarButton
-from sugar3.graphics.toolbutton import ToolButton
-from sugar3.activity.widgets import StopButton
-
-
-import sugargame.canvas
-
-import math_hurdler
 
 
 class MathHurdlerActivity(sugar3.activity.activity.Activity):
@@ -23,7 +19,6 @@ class MathHurdlerActivity(sugar3.activity.activity.Activity):
         super(MathHurdlerActivity, self).__init__(handle)
 
         self.paused = False
-
         # Create the game instance.
         self.game = math_hurdler.MathHurdler()
 
@@ -31,6 +26,7 @@ class MathHurdlerActivity(sugar3.activity.activity.Activity):
         self.build_toolbar()
 
         # Build the Pygame canvas.
+        print("1")
         self._pygamecanvas = sugargame.canvas.PygameCanvas(
             self, main=self.game.run)
 
@@ -88,8 +84,14 @@ class MathHurdlerActivity(sugar3.activity.activity.Activity):
             button.set_tooltip(_("Stop"))
 
     def read_file(self, file_path):
-        self.game.read_file(file_path)
-
+        with open(file_path, 'r') as f:
+            restore_data = f.read()
+            restore_data = str(restore_data).split()
+            score, play_state = [restore_data[i] for i in (0, 1)]
+            self.game.restore_game(score, play_state)
+            
     def write_file(self, file_path):
-        # self.game.write_file(file_path)
-        pass
+        score, play_state = self.game.write_file()
+        with open(file_path, 'w') as f:    
+            f.write(f'{score}\n{play_state}')
+  
