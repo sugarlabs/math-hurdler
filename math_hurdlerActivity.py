@@ -94,4 +94,3 @@ class MathHurdlerActivity(sugar3.activity.activity.Activity):
         score, play_state = self.game.write_file()
         with open(file_path, 'w') as f:    
             f.write(f'{score}\n{play_state}')
-  
