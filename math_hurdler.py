@@ -5,13 +5,14 @@ from question import Question
 from objects.button import Button
 from sprites.horse import Horse
 from sprites.sun import Sun
-from gi.repository import Gtk
+
 import pygame
 import random
 import os
 import math
 import gi
 gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
 
 
 class Color:

@@ -6,12 +6,13 @@ from sugar3.activity.widgets import ActivityToolbarButton
 from sugar3.graphics.toolbarbox import ToolbarBox
 import sugar3.activity.activity
 import pygame
-from gi.repository import Gtk
+
 from gettext import gettext as _
 
 import sys
 import gi
 gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
 
 
 class MathHurdlerActivity(sugar3.activity.activity.Activity):
