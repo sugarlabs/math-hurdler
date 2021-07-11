@@ -441,7 +441,7 @@ class MathHurdler:
                     reset()
 
                 # Try to stay at 30 FPS
-                self.clock.tick(30)
+                self.clock.tick(18)
 
             else:
                 def start_game():
