@@ -3,4 +3,4 @@ name = Math Hurdler
 bundle_id = edu.rit.math-hurdler
 exec = sugar-activity3 math_hurdlerActivity.MathHurdlerActivity
 icon = activity-generic
-activity_version = 1
+activity_version = 2
