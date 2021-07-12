@@ -1,0 +1,14 @@
+v2
+
+* Update README (Sourabha G)
+* Updated screenshots (Sourabha G)
+* Fix PyGIWarning (Sourabha G)
+* Increased time before each hurdle (Sourabha G)
+* Fix save and restore from journal (Sourabha G)
+* Port to Python3 (Sourabha G)
+* Updated to sugargame v1.3 (Sourabha G)
+* Fix fail to start (Ashish Kumar)
+
+v1
+
+* Initial release
