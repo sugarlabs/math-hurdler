@@ -149,12 +149,9 @@ class MathHurdler:
 
         screen = pygame.display.get_surface()
         screen_size = screen.get_size()
-
-        ground = pygame.Surface((screen_size[0], screen_size[1] / 3))
-        ground = ground.convert()
-        ground.fill(Color.BROWN)
-
         button_panel = pygame.Surface((screen_size[0] / 3, screen_size[1] / 7))
+        ground = pygame.image.load('./assets/images/ground.png')
+        ground = pygame.transform.scale(ground, (screen_size[0], screen_size[1] / 3))
 
         self.buttons = [
             Button(
@@ -169,13 +166,9 @@ class MathHurdler:
             ) for i in range(4)
         ]
 
-        grass = pygame.draw.line(
-            ground,
-            Color.GREEN,
-            (0, 0),
-            (ground.get_width(), 0),
-            int(ground.get_height() / 2)
-        )
+        grass = pygame.image.load('./assets/images/grass.png')
+        grass = pygame.transform.scale(grass, (screen_size[0], screen_size[1] / 12))
+        ground.blit(grass, (0,0))
 
         points_label = self.lg_font.render('POINTS', 1, Color.BLACK)
 
