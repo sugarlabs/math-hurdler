@@ -49,6 +49,7 @@ class MathHurdler:
         self.hurdle_number = 0
 
         self.points = 0
+        self.hscore = 0
 
         self.question = Question()
 
@@ -66,6 +67,11 @@ class MathHurdler:
 
         self.score_label = self.lg_font.render(
             str(self.points),
+            1,
+            Color.BLACK
+        )
+        self.hscore_label = self.font.render(
+            "High Score: " + str(self.hscore),
             1,
             Color.BLACK
         )
@@ -113,11 +119,12 @@ class MathHurdler:
         return os.path.join('./assets/sounds', sound_name)
 
     def write_file(self):
-        return self.points, self.playing
+        return self.points, self.hscore, self.playing
 
-    def restore_game(self, score = '', play_state = ''):
+    def restore_game(self, score = '', hscore = '', play_state = ''):
         self.resume = True
         self.points = int(score)
+        self.hscore = int(hscore)
         if play_state == 'True':
             self.playing = True
         else:
@@ -247,9 +254,6 @@ class MathHurdler:
                 "Hurdle #" + str(self.hurdle_number), 1, Color.BLACK)
             question_board.fill(Color.WHITE)
 
-            self.score_label = self.lg_font.render(
-                str(self.points), 1, Color.BLACK)
-
         def set_answer(answer_index):
             self.vx *= 2
             # unselect the previous answer button
@@ -267,8 +271,12 @@ class MathHurdler:
         def evaluate_answer(answer):
             if self.question.is_answer(answer):
                 self.points += 100
+                if self.hscore < self.points:
+                    self.hscore = self.points
                 self.score_label = self.lg_font.render(
                     str(self.points), 1, Color.BLACK)
+                self.hscore_label = self.font.render(
+                    "High Score: " + str(self.points), 1, Color.BLACK)
                 self.jump_sfx.play()
             else:
                 self.set_gameover(True)
@@ -417,6 +425,8 @@ class MathHurdler:
                         + self.score_label.get_height()
                     )
                 )
+
+                screen.blit(self.hscore_label, (10, 20))
 
                 if self.gameover:
                     screen.blit(

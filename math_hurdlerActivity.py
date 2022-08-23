@@ -27,7 +27,6 @@ class MathHurdlerActivity(sugar3.activity.activity.Activity):
         self.build_toolbar()
 
         # Build the Pygame canvas.
-        print("1")
         self._pygamecanvas = sugargame.canvas.PygameCanvas(
             self, main=self.game.run)
 
@@ -88,10 +87,10 @@ class MathHurdlerActivity(sugar3.activity.activity.Activity):
         with open(file_path, 'r') as f:
             restore_data = f.read()
             restore_data = str(restore_data).split()
-            score, play_state = [restore_data[i] for i in (0, 1)]
-            self.game.restore_game(score, play_state)
+            score, hscore, play_state = [restore_data[i] for i in range(2)]
+            self.game.restore_game(score, hscore, play_state)
             
     def write_file(self, file_path):
-        score, play_state = self.game.write_file()
+        score, hscore, play_state = self.game.write_file()
         with open(file_path, 'w') as f:    
-            f.write(f'{score}\n{play_state}')
+            f.write(f'{score}\n{hscore}\n{play_state}')
