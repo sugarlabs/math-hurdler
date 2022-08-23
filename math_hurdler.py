@@ -30,7 +30,7 @@ class MathHurdler:
         self.clock = pygame.time.Clock()
 
         self.x = -100
-        self.vx = 10
+        self.vx = 5
 
         self.resume = False
         self.paused = False
@@ -217,13 +217,11 @@ class MathHurdler:
             self.hurdle_number = 0
 
             self.x = -100
-            self.vx = 0
+            self.vx = 5
 
             self.direction = -1
 
             horse.set_horse(Horse.BASE)
-
-            set_answer(-1)
 
         def generate_question():
             next(self.question)
@@ -241,6 +239,8 @@ class MathHurdler:
             self.question_text_label = self.lg_font.render(
                 str(self.question), 1, Color.BLACK)
             self.hurdle_number += 1
+            # start at vx=5 and accelerate towards vx=10
+            self.vx = 4 + (self.hurdle_number * 6) / (self.hurdle_number + 5)
             self.score_label = self.lg_font.render(
                 str(self.points), 1, Color.BLACK)
             self.question_label = self.font.render(
@@ -251,6 +251,7 @@ class MathHurdler:
                 str(self.points), 1, Color.BLACK)
 
         def set_answer(answer_index):
+            self.vx *= 2
             # unselect the previous answer button
             if self.last_answer_index >= 0:
                 self.buttons[self.last_answer_index].set_selected(False)
@@ -307,11 +308,6 @@ class MathHurdler:
                 screen_size = screen.get_size()
 
                 if not self.paused and not self.gameover:
-
-                    # start at vx=5 and accelerate towards vx=10
-                    self.vx = 4 + (self.hurdle_number * 6) / \
-                        (self.hurdle_number + 5)
-
                     self.x += self.vx * self.direction
                     if self.direction == 1 and self.x > screen.get_width() \
                             + 50:
@@ -355,7 +351,6 @@ class MathHurdler:
                     elif question_dirty:
                         generate_question()
                         question_dirty = False
-                        set_answer(-1)
 
                 if self.gameover:
                     # spin the horse
