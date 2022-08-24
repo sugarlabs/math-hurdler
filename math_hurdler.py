@@ -121,7 +121,7 @@ class MathHurdler:
     def write_file(self):
         return self.points, self.hscore, self.playing
 
-    def restore_game(self, score = '', hscore = '', play_state = ''):
+    def restore_game(self, score='', hscore='', play_state=''):
         self.resume = True
         self.points = int(score)
         self.hscore = int(hscore)
