@@ -87,10 +87,11 @@ class MathHurdlerActivity(sugar3.activity.activity.Activity):
         with open(file_path, 'r') as f:
             restore_data = f.read()
             restore_data = str(restore_data).split()
-            score, hscore, play_state = [restore_data[i] for i in range(2)]
-            self.game.restore_game(score, hscore, play_state)
-            
+            score, hscore, play_state, hurdle_number = [
+                restore_data[i] for i in range(4)]
+            self.game.restore_game(score, hscore, play_state, hurdle_number)
+
     def write_file(self, file_path):
-        score, hscore, play_state = self.game.write_file()
-        with open(file_path, 'w') as f:    
-            f.write(f'{score}\n{hscore}\n{play_state}')
+        score, hscore, play_state, hurdle_number = self.game.write_file()
+        with open(file_path, 'w') as f:
+            f.write(f'{score}\n{hscore}\n{play_state}\n{hurdle_number}')
