@@ -119,19 +119,21 @@ class MathHurdler:
         return os.path.join('./assets/sounds', sound_name)
 
     def write_file(self):
-        return self.points, self.hscore, self.playing
+        return self.points, self.hscore, self.playing, self.hurdle_number
 
-    def restore_game(self, score='', hscore='', play_state=''):
+    def restore_game(self, score='', hscore='',
+                     play_state='', hurdle_number=''):
         self.resume = True
         self.points = int(score)
         self.hscore = int(hscore)
+        self.hurdle_number = int(hurdle_number)
         if play_state == 'True':
             self.playing = True
         else:
             self.playing = False
-    
 
     # The main game loop.
+
     def run(self):
 
         if not self.resume:
@@ -214,7 +216,8 @@ class MathHurdler:
             question_dirty = True
 
             self.points = 0
-            self.hurdle_number = 0
+            if not self.playing:
+                self.hurdle_number = 0
 
             self.x = -100
             self.vx = 5
