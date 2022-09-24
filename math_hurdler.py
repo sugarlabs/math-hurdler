@@ -126,7 +126,7 @@ class MathHurdler:
         self.resume = True
         self.points = int(score)
         self.hscore = int(hscore)
-        self.hurdle_number = int(hurdle_number)
+        self.hurdle_number = int(hurdle_number) - 1
         if play_state == 'True':
             self.playing = True
         else:
@@ -249,6 +249,11 @@ class MathHurdler:
             self.question_label = self.font.render(
                 "Hurdle #" + str(self.hurdle_number), 1, Color.BLACK)
             question_board.fill(Color.WHITE)
+            self.hscore_label = self.font.render(
+                "High Score: " + str(self.hscore),
+                1,
+                Color.BLACK
+            )
 
         def set_answer(answer_index):
             self.vx *= 2
