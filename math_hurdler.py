@@ -1,18 +1,20 @@
 #!/usr/bin/env python3
 
+from sugar3.activity.activity import get_activity_root
+from gi.repository import Gtk
 from fractions import Fraction
 from question import Question
 from objects.button import Button
 from sprites.horse import Horse
 from sprites.sun import Sun
 
+import logging
 import pygame
 import random
 import os
 import math
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
 
 
 class Color:
@@ -49,7 +51,7 @@ class MathHurdler:
         self.hurdle_number = 0
 
         self.points = 0
-        self.hscore = 0
+        self.hscore = self.load_highscore()
 
         self.question = Question()
 
@@ -119,6 +121,7 @@ class MathHurdler:
         return os.path.join('./assets/sounds', sound_name)
 
     def write_file(self):
+        self.save_highscore()
         return self.points, self.hscore, self.playing, self.hurdle_number
 
     def restore_game(self, score='', hscore='',
@@ -131,6 +134,30 @@ class MathHurdler:
             self.playing = True
         else:
             self.playing = False
+
+    def save_highscore(self):
+        file_path = os.path.join(get_activity_root(), 'data', 'highscore')
+        logging.debug(file_path)
+        highscore = []
+        if os.path.exists(file_path):
+            with open(file_path, "r") as fp:
+                highscore = fp.readlines()
+                int_highscore = int(highscore[0])
+        if int_highscore < self.points:
+            with open(file_path, "w") as fp:
+                fp.write(str(self.points))
+
+    def load_highscore(self):
+        file_path = os.path.join(get_activity_root(), 'data', 'highscore')
+        highscore = [0]
+        if os.path.exists(file_path):
+            try:
+                with open(file_path, "r") as fp:
+                    highscore = fp.readlines()
+                return int(highscore[0])
+            except ValueError or IndexError:
+                return 0
+        return 0
 
     # The main game loop.
 
@@ -277,7 +304,7 @@ class MathHurdler:
                 self.score_label = self.lg_font.render(
                     str(self.points), 1, Color.BLACK)
                 self.hscore_label = self.font.render(
-                    "High Score: " + str(self.points), 1, Color.BLACK)
+                    "High Score: " + str(self.hscore), 1, Color.BLACK)
                 self.jump_sfx.play()
             else:
                 self.set_gameover(True)
@@ -363,6 +390,7 @@ class MathHurdler:
 
                 if self.gameover:
                     # spin the horse
+                    self.save_highscore()
                     horse.set_horse(Horse.DEAD)
 
                 # Set the "sky" color to blue
