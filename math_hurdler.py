@@ -143,7 +143,10 @@ class MathHurdler:
             with open(file_path, "r") as fp:
                 highscore = fp.readlines()
                 int_highscore = int(highscore[0])
-        if int_highscore < self.points:
+            if int_highscore <  self.points:
+                with open(file_path, "w") as fp:
+                    fp.write(str(self.points))
+        else:
             with open(file_path, "w") as fp:
                 fp.write(str(self.points))
 
