@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-18 09:22-0400\n"
+"POT-Creation-Date: 2022-10-13 22:04+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,14 +21,14 @@ msgstr ""
 msgid "Math Hurdler"
 msgstr ""
 
-#: math-hurdlerActivity.py:54 math-hurdlerActivity.py:84
+#: math_hurdlerActivity.py:54 math_hurdlerActivity.py:84
 msgid "Stop"
 msgstr ""
 
-#: math-hurdlerActivity.py:55
+#: math_hurdlerActivity.py:55
 msgid "<ctrl>space"
 msgstr ""
 
-#: math-hurdlerActivity.py:81
+#: math_hurdlerActivity.py:81
 msgid "Start"
 msgstr ""
