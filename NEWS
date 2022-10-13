@@ -1,3 +1,9 @@
+v4
+
+* feat: added save and restore highscore between instances of game (Sourabha G)
+* fix: fixed highscore and huderler number rendering (Sourabha G)
+* fix: fixed save and restore game state feature added in 4ffc975; broken when 5eeab2e was introduced. (Sourabha G)
+
 v3
 
 * Add highscore system. (Sparsh Goenka)
