@@ -218,7 +218,7 @@ class MathHurdler:
             (int(hurdle.get_height() / 3), int(hurdle.get_width() / 3)))
 
         hurdle_y = display_info.current_h - \
-            hurdle.get_height() - (2 * ground.get_height() / 3)
+            hurdle.get_height() - (2 * ground.get_height() / 3) + 70
 
         question_board = pygame.Surface(
             (screen_size[0] / 3, screen_size[1] / 5))
@@ -367,7 +367,7 @@ class MathHurdler:
 
                     horse.rect.x = display_info.current_w / 3
                     horse.rect.y = display_info.current_h - \
-                        hurdle.get_height() - (3 * ground.get_height() / 4)
+                        hurdle.get_height() - (3 * ground.get_height() / 4) + 70
 
                     # Check if hurdle and horse in same spot.
                     if horse.rect.colliderect(hurdle_rect):
