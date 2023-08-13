@@ -5,6 +5,7 @@ from gi.repository import Gtk
 from fractions import Fraction
 from question import Question
 from objects.button import Button
+from option_button import Option_Button
 from sprites.horse import Horse
 from sprites.sun import Sun
 
@@ -181,22 +182,8 @@ class MathHurdler:
 
         screen = pygame.display.get_surface()
         screen_size = screen.get_size()
-        button_panel = pygame.Surface((screen_size[0] / 3, screen_size[1] / 7))
         ground = pygame.image.load('./assets/images/ground.png')
         ground = pygame.transform.scale(ground, (int(screen_size[0]), int(screen_size[1] / 3)))
-
-        self.buttons = [
-            Button(
-                str(self.question.choices[i]),
-                self.lg_font,
-                Color.BLACK,
-                button_panel.get_width() / 2,
-                button_panel.get_height() / 2,
-                Color.WHITE,
-                Color.BLACK,
-                -2
-            ) for i in range(4)
-        ]
 
         grass = pygame.image.load('./assets/images/grass.png')
         grass = pygame.transform.scale(grass, (int(screen_size[0]), int(screen_size[1] / 12)))
@@ -219,6 +206,19 @@ class MathHurdler:
 
         hurdle_y = display_info.current_h - \
             hurdle.get_height() - (2 * ground.get_height() / 3) + 70
+
+        self.buttons = []
+        button_width = 200
+        button_height = 80
+        buttons_x_padding = 50
+        buttons_y_padding = (ground.get_rect().height - grass.get_rect().height - button_height) / 4
+        buttons_gap = (screen_size[0] - (buttons_x_padding * 2 + button_width * 4)) / 3
+        
+        for i, choice in enumerate(self.question.choices):
+            choice_text = self.lg_font.render(("A", "B", "C", "D")[i] + " " + str(choice), 1, Color.BLACK)
+            self.buttons.append(Option_Button(buttons_x_padding + button_width * i + buttons_gap * i,
+                                              screen_size[1] - button_height - buttons_y_padding,
+                                              button_width, button_height, choice_text, str(choice)))
 
         question_board = pygame.Surface(
             (screen_size[0] / 3, screen_size[1] / 5))
@@ -259,15 +259,12 @@ class MathHurdler:
         def generate_question():
             next(self.question)
 
-            self.buttons[0].set_text(str(self.question.choices[0]))
-            self.buttons[1].set_text(str(self.question.choices[1]))
-            self.buttons[2].set_text(str(self.question.choices[2]))
-            self.buttons[3].set_text(str(self.question.choices[3]))
-
-            self.buttons[0].set_color(self.buttons[0].color, False)
-            self.buttons[1].set_color(self.buttons[0].color, False)
-            self.buttons[2].set_color(self.buttons[0].color, False)
-            self.buttons[3].set_color(self.buttons[0].color, False)
+            for i in range(4):
+                choice_text = self.lg_font.render(("A", "B", "C", "D")[i] + " " + str(self.question.choices[i]),
+                                                  1, Color.BLACK)
+                self.buttons[i].set_text(choice_text)
+                self.buttons[i].value = str(self.question.choices[i])
+                self.buttons[i].set_color((255, 255, 255))
 
             self.question_text_label = self.lg_font.render(
                 str(self.question), 1, Color.BLACK)
@@ -292,7 +289,7 @@ class MathHurdler:
                 self.buttons[self.last_answer_index].set_selected(False)
 
             if answer_index >= 0:
-                self.last_answer = Fraction(self.buttons[answer_index].text)
+                self.last_answer = Fraction(self.buttons[answer_index].value)
                 self.buttons[answer_index].set_selected(True)
                 self.last_answer_index = answer_index
             else:
@@ -313,11 +310,10 @@ class MathHurdler:
                 self.set_gameover(True)
                 if self.last_answer_index >= 0:
                     self.buttons[self.last_answer_index].set_color(
-                        Color.RED, False)
+                        Color.RED)
 
             self.buttons[self.question.answer_index].set_color(
-                Color.GREEN, False)
-        
+                Color.GREEN)
 
         while self.running:
             # Processing Gtk Events
@@ -411,35 +407,14 @@ class MathHurdler:
                     (10, self.question_label.get_height() + 10))
 
                 screen.blit(ground, (0, screen_size[1] - ground.get_height()))
-                button_panel_x = ground.get_width() / 4
-                button_panel_y = screen_size[1] - \
-                    ground.get_height() + ground.get_height() / 3 + 10
-                screen.blit(button_panel, (button_panel_x, button_panel_y))
-
-                self.buttons[0].rect.x = button_panel_x
-                self.buttons[0].rect.y = button_panel_y
-                self.buttons[0].draw(screen)
-
-                self.buttons[1].rect.x = button_panel_x + \
-                    self.buttons[0].image.get_width()
-                self.buttons[1].rect.y = button_panel_y
-                self.buttons[1].draw(screen)
-
-                self.buttons[2].rect.x = button_panel_x
-                self.buttons[2].rect.y = button_panel_y + \
-                    self.buttons[0].image.get_height()
-                self.buttons[2].draw(screen)
-
-                self.buttons[3].rect.x = button_panel_x + \
-                    self.buttons[2].image.get_width()
-                self.buttons[3].rect.y = button_panel_y + \
-                    self.buttons[2].image.get_height()
-                self.buttons[3].draw(screen)
 
                 screen.blit(hurdle, (self.x, hurdle_y))
 
                 allsprites = pygame.sprite.RenderPlain(sun, horse)
                 allsprites.draw(screen)
+
+                for btn in self.buttons:
+                    btn.draw()
 
                 screen.blit(
                     self.score_label,
