@@ -49,8 +49,8 @@ class Option_Button:
         m_y = self.rect.y + self.rect.height // 2 - self.text_rect.height // 2
         self.gameDisplay.blit(self.text, (m_x, m_y))
 
-    def set_color(self, clr):
-        self.color = clr
+    def set_color(self, color):
+        self.color = color
 
     def hovered(self):
         return self.rect.collidepoint(pygame.mouse.get_pos())
