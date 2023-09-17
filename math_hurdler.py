@@ -329,7 +329,6 @@ class MathHurdler:
                     elif event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_p:
                             self.paused = not self.paused
-                        # Select options by 1,2,3,4 or A,B,C,D keys
                         elif event.key == pygame.K_a or event.key == pygame.K_1:
                             set_answer(0)
                         elif event.key == pygame.K_b or event.key == pygame.K_2:
