@@ -216,7 +216,8 @@ class MathHurdler:
         
         for i, choice in enumerate(self.question.choices):
             choice_text = self.lg_font.render(("A", "B", "C", "D")[i] + " " + str(choice), 1, Color.BLACK)
-            self.buttons.append(Option_Button(buttons_x_padding + button_width * i + buttons_gap * i,
+            self.buttons.append(Option_Button(
+                                              buttons_x_padding + button_width * i + buttons_gap * i,
                                               screen_size[1] - button_height - buttons_y_padding,
                                               button_width, button_height, choice_text, str(choice)))
 
