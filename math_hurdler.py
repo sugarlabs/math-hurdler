@@ -183,10 +183,10 @@ class MathHurdler:
         screen = pygame.display.get_surface()
         screen_size = screen.get_size()
         ground = pygame.image.load('./assets/images/ground.png')
-        ground = pygame.transform.scale(ground, (int(screen_size[0]), int(screen_size[1] / 3)))
+        ground = pygame.transform.scale(ground, (int(screen_size[0]), int(screen_size[1] // 3)))
 
         grass = pygame.image.load('./assets/images/grass.png')
-        grass = pygame.transform.scale(grass, (int(screen_size[0]), int(screen_size[1] / 12)))
+        grass = pygame.transform.scale(grass, (int(screen_size[0]), int(screen_size[1] // 12)))
         ground.blit(grass, (0,0))
 
         points_label = self.lg_font.render('POINTS', 1, Color.BLACK)
@@ -195,24 +195,24 @@ class MathHurdler:
         sun.rect.topleft = (screen_size[0] - sun.image.get_width(), 0)
 
         horse = Horse()
-        horse.rect.x = display_info.current_h / 3
+        horse.rect.x = display_info.current_h // 3
         horse.rect.y = display_info.current_h - \
             horse.image.get_height() - ground.get_height()
 
         hurdle = pygame.image.load('./assets/images/hurdle.png')
         hurdle = pygame.transform.scale(
             hurdle,
-            (int(hurdle.get_height() / 3), int(hurdle.get_width() / 3)))
+            (int(hurdle.get_height() // 3), int(hurdle.get_width() // 3)))
 
         hurdle_y = display_info.current_h - \
-            hurdle.get_height() - (2 * ground.get_height() / 3) + 70
+            hurdle.get_height() - (2 * ground.get_height() // 3) + 70
 
         self.buttons = []
         button_width = 200
         button_height = 80
         buttons_x_padding = 50
-        buttons_y_padding = (ground.get_rect().height - grass.get_rect().height - button_height) / 4
-        buttons_gap = (screen_size[0] - (buttons_x_padding * 2 + button_width * 4)) / 3
+        buttons_y_padding = (ground.get_rect().height - grass.get_rect().height - button_height) // 4
+        buttons_gap = (screen_size[0] - (buttons_x_padding * 2 + button_width * 4)) // 3
         
         for i, choice in enumerate(self.question.choices):
             choice_text = self.lg_font.render(("A", "B", "C", "D")[i] + " " + str(choice), 1, Color.BLACK)
@@ -221,7 +221,7 @@ class MathHurdler:
                                               button_width, button_height, choice_text, str(choice)))
 
         question_board = pygame.Surface(
-            (screen_size[0] / 3, screen_size[1] / 5))
+            (screen_size[0] // 3, screen_size[1] // 5))
         question_board = question_board.convert()
         question_board.fill(Color.WHITE)
 
@@ -270,7 +270,7 @@ class MathHurdler:
                 str(self.question), 1, Color.BLACK)
             self.hurdle_number += 1
             # start at vx=5 and accelerate towards vx=10
-            self.vx = 4 + (self.hurdle_number * 6) / (self.hurdle_number + 5)
+            self.vx = 4 + (self.hurdle_number * 6) // (self.hurdle_number + 5)
             self.score_label = self.lg_font.render(
                 str(self.points), 1, Color.BLACK)
             self.question_label = self.font.render(
@@ -368,9 +368,9 @@ class MathHurdler:
 
                     self.horse_change += 1
 
-                    horse.rect.x = display_info.current_w / 3
+                    horse.rect.x = display_info.current_w // 3
                     horse.rect.y = display_info.current_h - \
-                        hurdle.get_height() - (3 * ground.get_height() / 4) + 70
+                        hurdle.get_height() - (3 * ground.get_height() // 4) + 70
 
                     # Check if hurdle and horse in same spot.
                     if horse.rect.colliderect(hurdle_rect):
@@ -382,7 +382,7 @@ class MathHurdler:
                         # if not gameover, jump the hurdle
                         if not self.gameover:
                             horse.set_horse(Horse.JUMP)
-                            horse.rect.x = display_info.current_w / 3
+                            horse.rect.x = display_info.current_w // 3
                             horse.rect.y = display_info.current_h \
                                 - horse.image.get_height() \
                                 - ground.get_height() \
@@ -406,8 +406,8 @@ class MathHurdler:
 
                 screen.blit(
                     question_board,
-                    (screen_size[0] / 4,
-                     screen_size[1] / 5))
+                    (screen_size[0] // 4,
+                     screen_size[1] // 5))
                 question_board.blit(self.question_label, (10, 10))
                 question_board.blit(
                     self.question_text_label,
@@ -426,16 +426,16 @@ class MathHurdler:
                 screen.blit(
                     self.score_label,
                     (
-                        sun.rect.x + sun.image.get_width() / 4,
-                        sun.rect.y + sun.image.get_height() / 3
+                        sun.rect.x + sun.image.get_width() // 4,
+                        sun.rect.y + sun.image.get_height() // 3
                     )
                 )
 
                 screen.blit(
                     points_label,
                     (
-                        sun.rect.x + sun.image.get_width() / 4,
-                        sun.rect.y + sun.image.get_height() / 3
+                        sun.rect.x + sun.image.get_width() // 4,
+                        sun.rect.y + sun.image.get_height() // 3
                         + self.score_label.get_height()
                     )
                 )
@@ -446,8 +446,8 @@ class MathHurdler:
                     screen.blit(
                         gameover_label,
                         (
-                            (screen_size[0] - gameover_label.get_width()) / 2,
-                            (screen_size[1] - gameover_label.get_height()) / 2,
+                            (screen_size[0] - gameover_label.get_width()) // 2,
+                            (screen_size[1] - gameover_label.get_height()) // 2,
                         )
                     )
 
@@ -504,26 +504,26 @@ class MathHurdler:
                 )
 
                 # draw menu horse
-                horse.rect.x = (screen_size[0] - horse.image.get_width()) / 2
+                horse.rect.x = (screen_size[0] - horse.image.get_width()) // 2
                 horse.rect.y = (
-                    screen_size[1] - horse.image.get_height()) / 2 + 200
+                    screen_size[1] - horse.image.get_height()) // 2 + 200
 
                 menu_sprites = pygame.sprite.RenderPlain(horse)
                 menu_sprites.draw(screen)
 
                 # draw play button
                 play_button.rect.x = (
-                    screen_size[0] - play_button.rect.width) / 2
+                    screen_size[0] - play_button.rect.width) // 2
                 play_button.rect.y = (
-                    screen_size[1] - play_button.rect.height) / 2
+                    screen_size[1] - play_button.rect.height) // 2
                 play_button.draw(screen)
 
                 # draw menu label
                 screen.blit(
                     menu_label,
                     (
-                        (screen_size[0] - menu_label.get_width()) / 2,
-                        (screen_size[1] - menu_label.get_height()) / 2 - 200,
+                        (screen_size[0] - menu_label.get_width()) // 2,
+                        (screen_size[1] - menu_label.get_height()) // 2 - 200,
                     )
                 )
 
