@@ -29,7 +29,6 @@ class Color:
 
 class MathHurdler:
     def __init__(self):
-        # Set up a clock for managing the frame rate.
         self.clock = pygame.time.Clock()
 
         self.x = -100
@@ -163,7 +162,6 @@ class MathHurdler:
                 return 0
         return 0
 
-    # The main game loop.
 
     def run(self):
 
@@ -288,7 +286,6 @@ class MathHurdler:
 
         def set_answer(answer_index):
             self.vx *= 2
-            # unselect the previous answer button
             if self.last_answer_index >= 0:
                 self.buttons[self.last_answer_index].set_selected(False)
 
@@ -320,7 +317,6 @@ class MathHurdler:
                 Color.GREEN)
 
         while self.running:
-            # Processing Gtk Events
             while Gtk.events_pending():
                 Gtk.main_iteration()
             if self.playing:
@@ -398,11 +394,9 @@ class MathHurdler:
                         question_dirty = False
 
                 if self.gameover:
-                    # spin the horse
                     self.save_highscore()
                     horse.set_horse(Horse.DEAD)
 
-                # Set the "sky" color to blue
                 screen.fill(background_color)
 
                 sun.rect.topleft = (screen_size[0] - sun.image.get_width(), 0)
@@ -454,7 +448,6 @@ class MathHurdler:
                         )
                     )
 
-                # Draw the frame
                 pygame.display.flip()
 
                 if self.gameover:
@@ -462,7 +455,6 @@ class MathHurdler:
                     self.set_playing(False)
                     reset()
 
-                # Try to stay at 30 FPS
                 self.clock.tick(18)
 
             else:
@@ -470,7 +462,6 @@ class MathHurdler:
                     reset()
                     self.set_playing(True)
 
-                # in the menu
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         pygame.quit()
@@ -491,7 +482,6 @@ class MathHurdler:
 
                 self.horse_change += 1
 
-                # draw rainbow background fill
                 screen.fill(
                     (
                         math.floor(
@@ -506,7 +496,6 @@ class MathHurdler:
                     )
                 )
 
-                # draw menu horse
                 horse.rect.x = (screen_size[0] - horse.image.get_width()) // 2
                 horse.rect.y = (
                     screen_size[1] - horse.image.get_height()) // 2 + 200
@@ -514,14 +503,12 @@ class MathHurdler:
                 menu_sprites = pygame.sprite.RenderPlain(horse)
                 menu_sprites.draw(screen)
 
-                # draw play button
                 play_button.rect.x = (
                     screen_size[0] - play_button.rect.width) // 2
                 play_button.rect.y = (
                     screen_size[1] - play_button.rect.height) // 2
                 play_button.draw(screen)
 
-                # draw menu label
                 screen.blit(
                     menu_label,
                     (
@@ -532,7 +519,6 @@ class MathHurdler:
 
                 pygame.display.flip()
 
-                # Try to stay at 30 FPS
                 self.clock.tick(30)
 
 
