@@ -20,6 +20,7 @@ class MathHurdlerActivity(sugar3.activity.activity.Activity):
         super(MathHurdlerActivity, self).__init__(handle)
 
         self.paused = False
+        self.muted = False
         # Create the game instance.
         self.game = math_hurdler.MathHurdler()
 
@@ -58,6 +59,13 @@ class MathHurdlerActivity(sugar3.activity.activity.Activity):
 
         toolbar_box.toolbar.insert(stop_play, -1)
 
+        mute_button = ToolButton('speaker-muted-100')
+        mute_button.set_tooltip(_('Sound'))
+        mute_button.connect('clicked', self.sound_control)
+        mute_button.show()
+
+        toolbar_box.toolbar.insert(mute_button, -1)
+
         # Blank space (separator) and Stop button at the end:
 
         separator = Gtk.SeparatorToolItem()
@@ -77,11 +85,21 @@ class MathHurdlerActivity(sugar3.activity.activity.Activity):
 
         # Update the button to show the next action.
         if self.paused:
-            button.set_icon('media-playback-start')
+            button.set_icon_name('media-playback-start')
             button.set_tooltip(_("Start"))
         else:
-            button.set_icon('media-playback-stop')
+            button.set_icon_name('media-playback-stop')
             button.set_tooltip(_("Stop"))
+
+    def sound_control(self, button):
+        self.muted = not self.muted
+        if self.muted:
+            button.set_icon_name('speaker-muted-000')
+            button.set_tooltip(_('Unmute'))
+        else:
+            button.set_icon_name('speaker-muted-100')
+            button.set_tooltip(_('Mute'))
+        self.game.toggle_mute()
 
     def read_file(self, file_path):
         with open(file_path, 'r') as f:

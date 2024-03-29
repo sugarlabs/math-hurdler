@@ -38,6 +38,8 @@ class MathHurdler:
         self.paused = False
         self.direction = -1
 
+        self.volume = 1
+
         self.circle_size = 150
 
         self.horse_change_semaphore = 3
@@ -90,12 +92,25 @@ class MathHurdler:
             self.get_sound_path('sad_trombone.wav'))
         self.jump_sfx = pygame.mixer.Sound(self.get_sound_path('success.wav'))
 
+        self.sounds = [self.death_sfx, self.jump_sfx]
+
     def set_paused(self, paused):
         self.paused = paused
         if paused:
+            pygame.mixer.pause()
             pygame.mixer.music.stop()
         else:
+            pygame.mixer.unpause()
             pygame.mixer.music.play(-1)
+
+    def set_volume(self, volume):
+        self.volume = volume
+        for sound in self.sounds:
+            sound.set_volume(self.volume)
+        pygame.mixer.music.set_volume(self.volume)
+
+    def toggle_mute(self):
+        self.set_volume((self.volume + 1) % 2)
 
     def set_gameover(self, gameover):
         self.gameover = gameover
