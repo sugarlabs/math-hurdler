@@ -2,6 +2,6 @@
 name = Math Hurdler
 bundle_id = edu.rit.math-hurdler
 exec = sugar-activity3 math_hurdlerActivity.MathHurdlerActivity
-icon = activity-generic
+icon = activity-math-hurdler
 activity_version = 4
 license = MIT License
