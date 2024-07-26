@@ -77,6 +77,10 @@ class MathHurdlerActivity(sugar3.activity.activity.Activity):
         stop_button = StopButton(self)
         toolbar_box.toolbar.insert(stop_button, -1)
         stop_button.show()
+        stop_button.connect('clicked', self._stop_cb)
+
+    def _stop_cb(self, button):
+        self.game.running = False
 
     def _stop_play_cb(self, button):
         # Pause or unpause the game.
