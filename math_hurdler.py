@@ -180,7 +180,8 @@ class MathHurdler:
     # The main game loop.
 
     def run(self):
-
+        self.start_time = 0
+        self.time_since_gameover = 0
         if not self.resume:
             self.playing = False
         self.running = True
@@ -326,6 +327,7 @@ class MathHurdler:
                 self.jump_sfx.play()
             else:
                 self.set_gameover(True)
+                self.start_time = pygame.time.get_ticks()
                 if self.last_answer_index >= 0:
                     self.buttons[self.last_answer_index].set_color(
                         Color.RED, False)
@@ -410,6 +412,7 @@ class MathHurdler:
                     # spin the horse
                     self.save_highscore()
                     horse.set_horse(Horse.DEAD)
+                    self.time_since_gameover = pygame.time.get_ticks() - self.start_time
 
                 # Set the "sky" color to blue
                 screen.fill(background_color)
@@ -487,8 +490,7 @@ class MathHurdler:
                 # Draw the frame
                 pygame.display.flip()
 
-                if self.gameover:
-                    pygame.time.delay(6000)
+                if self.gameover and self.time_since_gameover >= 6000:
                     self.set_playing(False)
                     reset()
 
