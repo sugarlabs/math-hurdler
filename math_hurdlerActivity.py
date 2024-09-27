@@ -51,8 +51,8 @@ class MathHurdlerActivity(sugar3.activity.activity.Activity):
 
         # Pause/Play button:
 
-        stop_play = ToolButton('media-playback-stop')
-        stop_play.set_tooltip(_("Stop"))
+        stop_play = ToolButton('media-playback-pause')
+        stop_play.set_tooltip(_("Pause"))
         stop_play.set_accelerator(_('<ctrl>space'))
         stop_play.connect('clicked', self._stop_play_cb)
         stop_play.show()
