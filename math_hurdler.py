@@ -5,6 +5,7 @@ from gi.repository import Gtk
 from fractions import Fraction
 from question import Question
 from objects.button import Button
+from option_button import Option_Button
 from sprites.horse import Horse
 from sprites.sun import Sun
 
@@ -28,7 +29,6 @@ class Color:
 
 class MathHurdler:
     def __init__(self):
-        # Set up a clock for managing the frame rate.
         self.clock = pygame.time.Clock()
 
         self.x = -100
@@ -177,7 +177,6 @@ class MathHurdler:
                 return 0
         return 0
 
-    # The main game loop.
 
     def run(self):
         self.start_time = 0
@@ -197,25 +196,11 @@ class MathHurdler:
 
         screen = pygame.display.get_surface()
         screen_size = screen.get_size()
-        button_panel = pygame.Surface((screen_size[0] / 3, screen_size[1] / 7))
         ground = pygame.image.load('./assets/images/ground.png')
-        ground = pygame.transform.scale(ground, (int(screen_size[0]), int(screen_size[1] / 3)))
-
-        self.buttons = [
-            Button(
-                str(self.question.choices[i]),
-                self.lg_font,
-                Color.BLACK,
-                button_panel.get_width() / 2,
-                button_panel.get_height() / 2,
-                Color.WHITE,
-                Color.BLACK,
-                -2
-            ) for i in range(4)
-        ]
+        ground = pygame.transform.scale(ground, (int(screen_size[0]), int(screen_size[1] // 3)))
 
         grass = pygame.image.load('./assets/images/grass.png')
-        grass = pygame.transform.scale(grass, (int(screen_size[0]), int(screen_size[1] / 12)))
+        grass = pygame.transform.scale(grass, (int(screen_size[0]), int(screen_size[1] // 12)))
         ground.blit(grass, (0,0))
 
         points_label = self.lg_font.render('POINTS', 1, Color.BLACK)
@@ -224,20 +209,37 @@ class MathHurdler:
         sun.rect.topleft = (screen_size[0] - sun.image.get_width(), 0)
 
         horse = Horse()
-        horse.rect.x = display_info.current_h / 3
+        horse.rect.x = display_info.current_h // 3
         horse.rect.y = display_info.current_h - \
             horse.image.get_height() - ground.get_height()
 
         hurdle = pygame.image.load('./assets/images/hurdle.png')
         hurdle = pygame.transform.scale(
             hurdle,
-            (int(hurdle.get_height() / 3), int(hurdle.get_width() / 3)))
+            (int(hurdle.get_height() // 3), int(hurdle.get_width() // 3)))
 
         hurdle_y = display_info.current_h - \
-            hurdle.get_height() - (2 * ground.get_height() / 3)
+            hurdle.get_height() - (2 * ground.get_height() // 3) + 70
+
+        self.buttons = []
+        button_width = 200
+        button_height = 80
+        buttons_x_padding = 50
+        buttons_y_padding = (ground.get_rect().height - grass.get_rect().height - button_height) // 4
+        buttons_gap = (screen_size[0] - (buttons_x_padding * 2 + button_width * 4)) // 3
+        
+        for i, choice in enumerate(self.question.choices):
+            choice_text = self.lg_font.render(("A", "B", "C", "D")[i] + " " + str(choice), 1, Color.BLACK)
+            self.buttons.append(
+                Option_Button(
+                    buttons_x_padding + button_width * i + buttons_gap * i,
+                    screen_size[1] - button_height - buttons_y_padding,
+                    button_width, button_height, choice_text, str(choice)
+                )
+            )
 
         question_board = pygame.Surface(
-            (screen_size[0] / 3, screen_size[1] / 5))
+            (screen_size[0] // 3, screen_size[1] // 5))
         question_board = question_board.convert()
         question_board.fill(Color.WHITE)
 
@@ -275,21 +277,18 @@ class MathHurdler:
         def generate_question():
             next(self.question)
 
-            self.buttons[0].set_text(str(self.question.choices[0]))
-            self.buttons[1].set_text(str(self.question.choices[1]))
-            self.buttons[2].set_text(str(self.question.choices[2]))
-            self.buttons[3].set_text(str(self.question.choices[3]))
-
-            self.buttons[0].set_color(self.buttons[0].color, False)
-            self.buttons[1].set_color(self.buttons[0].color, False)
-            self.buttons[2].set_color(self.buttons[0].color, False)
-            self.buttons[3].set_color(self.buttons[0].color, False)
+            for i in range(4):
+                choice_text = self.lg_font.render(("A", "B", "C", "D")[i] + " " + str(self.question.choices[i]),
+                                                  1, Color.BLACK)
+                self.buttons[i].set_text(choice_text)
+                self.buttons[i].value = str(self.question.choices[i])
+                self.buttons[i].set_color((255, 255, 255))
 
             self.question_text_label = self.lg_font.render(
                 str(self.question), 1, Color.BLACK)
             self.hurdle_number += 1
             # start at vx=5 and accelerate towards vx=10
-            self.vx = 4 + (self.hurdle_number * 6) / (self.hurdle_number + 5)
+            self.vx = 4 + (self.hurdle_number * 6) // (self.hurdle_number + 5)
             self.score_label = self.lg_font.render(
                 str(self.points), 1, Color.BLACK)
             self.question_label = self.font.render(
@@ -303,12 +302,11 @@ class MathHurdler:
 
         def set_answer(answer_index):
             self.vx *= 2
-            # unselect the previous answer button
             if self.last_answer_index >= 0:
                 self.buttons[self.last_answer_index].set_selected(False)
 
             if answer_index >= 0:
-                self.last_answer = Fraction(self.buttons[answer_index].text)
+                self.last_answer = Fraction(self.buttons[answer_index].value)
                 self.buttons[answer_index].set_selected(True)
                 self.last_answer_index = answer_index
             else:
@@ -330,14 +328,12 @@ class MathHurdler:
                 self.start_time = pygame.time.get_ticks()
                 if self.last_answer_index >= 0:
                     self.buttons[self.last_answer_index].set_color(
-                        Color.RED, False)
+                        Color.RED)
 
             self.buttons[self.question.answer_index].set_color(
-                Color.GREEN, False)
-        
+                Color.GREEN)
 
         while self.running:
-            # Processing Gtk Events
             while Gtk.events_pending():
                 Gtk.main_iteration()
             if self.playing:
@@ -350,8 +346,14 @@ class MathHurdler:
                     elif event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_p:
                             self.paused = not self.paused
-                        elif event.key == pygame.K_c:
-                            set_answer(self.question.answer_index)
+                        elif event.key == pygame.K_a or event.key == pygame.K_1:
+                            set_answer(0)
+                        elif event.key == pygame.K_b or event.key == pygame.K_2:
+                            set_answer(1)
+                        elif event.key == pygame.K_c or event.key == pygame.K_3:
+                            set_answer(2)
+                        elif event.key == pygame.K_d or event.key == pygame.K_4:
+                            set_answer(3)
                     elif event.type == pygame.MOUSEBUTTONDOWN:
                         if not self.gameover:
                             for i in range(0, 4):
@@ -382,9 +384,9 @@ class MathHurdler:
 
                     self.horse_change += 1
 
-                    horse.rect.x = display_info.current_w / 3
+                    horse.rect.x = display_info.current_w // 3
                     horse.rect.y = display_info.current_h - \
-                        hurdle.get_height() - (3 * ground.get_height() / 4)
+                        hurdle.get_height() - (3 * ground.get_height() // 4) + 70
 
                     # Check if hurdle and horse in same spot.
                     if horse.rect.colliderect(hurdle_rect):
@@ -396,7 +398,7 @@ class MathHurdler:
                         # if not gameover, jump the hurdle
                         if not self.gameover:
                             horse.set_horse(Horse.JUMP)
-                            horse.rect.x = display_info.current_w / 3
+                            horse.rect.x = display_info.current_w // 3
                             horse.rect.y = display_info.current_h \
                                 - horse.image.get_height() \
                                 - ground.get_height() \
@@ -409,69 +411,46 @@ class MathHurdler:
                         question_dirty = False
 
                 if self.gameover:
-                    # spin the horse
                     self.save_highscore()
                     horse.set_horse(Horse.DEAD)
                     self.time_since_gameover = pygame.time.get_ticks() - self.start_time
 
-                # Set the "sky" color to blue
                 screen.fill(background_color)
 
                 sun.rect.topleft = (screen_size[0] - sun.image.get_width(), 0)
 
                 screen.blit(
                     question_board,
-                    (screen_size[0] / 4,
-                     screen_size[1] / 5))
+                    (screen_size[0] // 4,
+                     screen_size[1] // 5))
                 question_board.blit(self.question_label, (10, 10))
                 question_board.blit(
                     self.question_text_label,
                     (10, self.question_label.get_height() + 10))
 
                 screen.blit(ground, (0, screen_size[1] - ground.get_height()))
-                button_panel_x = ground.get_width() / 4
-                button_panel_y = screen_size[1] - \
-                    ground.get_height() + ground.get_height() / 3 + 10
-                screen.blit(button_panel, (button_panel_x, button_panel_y))
-
-                self.buttons[0].rect.x = button_panel_x
-                self.buttons[0].rect.y = button_panel_y
-                self.buttons[0].draw(screen)
-
-                self.buttons[1].rect.x = button_panel_x + \
-                    self.buttons[0].image.get_width()
-                self.buttons[1].rect.y = button_panel_y
-                self.buttons[1].draw(screen)
-
-                self.buttons[2].rect.x = button_panel_x
-                self.buttons[2].rect.y = button_panel_y + \
-                    self.buttons[0].image.get_height()
-                self.buttons[2].draw(screen)
-
-                self.buttons[3].rect.x = button_panel_x + \
-                    self.buttons[2].image.get_width()
-                self.buttons[3].rect.y = button_panel_y + \
-                    self.buttons[2].image.get_height()
-                self.buttons[3].draw(screen)
 
                 screen.blit(hurdle, (self.x, hurdle_y))
 
                 allsprites = pygame.sprite.RenderPlain(sun, horse)
                 allsprites.draw(screen)
 
+                for btn in self.buttons:
+                    btn.draw()
+
                 screen.blit(
                     self.score_label,
                     (
-                        sun.rect.x + sun.image.get_width() / 4,
-                        sun.rect.y + sun.image.get_height() / 3
+                        sun.rect.x + sun.image.get_width() // 4,
+                        sun.rect.y + sun.image.get_height() // 3
                     )
                 )
 
                 screen.blit(
                     points_label,
                     (
-                        sun.rect.x + sun.image.get_width() / 4,
-                        sun.rect.y + sun.image.get_height() / 3
+                        sun.rect.x + sun.image.get_width() // 4,
+                        sun.rect.y + sun.image.get_height() // 3
                         + self.score_label.get_height()
                     )
                 )
@@ -482,19 +461,17 @@ class MathHurdler:
                     screen.blit(
                         gameover_label,
                         (
-                            (screen_size[0] - gameover_label.get_width()) / 2,
-                            (screen_size[1] - gameover_label.get_height()) / 2,
+                            (screen_size[0] - gameover_label.get_width()) // 2,
+                            (screen_size[1] - gameover_label.get_height()) // 2,
                         )
                     )
 
-                # Draw the frame
                 pygame.display.flip()
 
                 if self.gameover and self.time_since_gameover >= 6000:
                     self.set_playing(False)
                     reset()
 
-                # Try to stay at 30 FPS
                 self.clock.tick(18)
 
             else:
@@ -502,7 +479,6 @@ class MathHurdler:
                     reset()
                     self.set_playing(True)
 
-                # in the menu
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         pygame.quit()
@@ -523,7 +499,6 @@ class MathHurdler:
 
                 self.horse_change += 1
 
-                # draw rainbow background fill
                 screen.fill(
                     (
                         math.floor(
@@ -538,33 +513,29 @@ class MathHurdler:
                     )
                 )
 
-                # draw menu horse
-                horse.rect.x = (screen_size[0] - horse.image.get_width()) / 2
+                horse.rect.x = (screen_size[0] - horse.image.get_width()) // 2
                 horse.rect.y = (
-                    screen_size[1] - horse.image.get_height()) / 2 + 200
+                    screen_size[1] - horse.image.get_height()) // 2 + 200
 
                 menu_sprites = pygame.sprite.RenderPlain(horse)
                 menu_sprites.draw(screen)
 
-                # draw play button
                 play_button.rect.x = (
-                    screen_size[0] - play_button.rect.width) / 2
+                    screen_size[0] - play_button.rect.width) // 2
                 play_button.rect.y = (
-                    screen_size[1] - play_button.rect.height) / 2
+                    screen_size[1] - play_button.rect.height) // 2
                 play_button.draw(screen)
 
-                # draw menu label
                 screen.blit(
                     menu_label,
                     (
-                        (screen_size[0] - menu_label.get_width()) / 2,
-                        (screen_size[1] - menu_label.get_height()) / 2 - 200,
+                        (screen_size[0] - menu_label.get_width()) // 2,
+                        (screen_size[1] - menu_label.get_height()) // 2 - 200,
                     )
                 )
 
                 pygame.display.flip()
 
-                # Try to stay at 30 FPS
                 self.clock.tick(30)
 
 
